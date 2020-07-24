@@ -5,6 +5,7 @@ export type EpisodeType = {
   extension: string;
   isMedia: boolean;
   ident: Ident | null;
+  newName: (name: string) => string;
 };
 
 type Ident = {
@@ -35,6 +36,16 @@ export class Episode implements EpisodeType {
     return this.getIdent(this._filename);
   }
 
+  public newName(name: string): string {
+    if (!this.isMedia || !this.ident) {
+      throw new Error('File not valid for rename');
+    }
+
+    const { season, episode } = this.ident;
+
+    return `${name} - S${season}E${episode}${this.extension}`;
+  }
+
   private getExt(f: string): string {
     return f.substring(f.length - 4);
   }
@@ -48,6 +59,7 @@ export class Episode implements EpisodeType {
     const matches: RegExpMatchArray | null = f.match(regex);
 
     if (!matches) return null;
+
     const groups = (matches as RegExpMatchArray).groups;
     const { season, episode }: Ident = groups as Ident;
 
