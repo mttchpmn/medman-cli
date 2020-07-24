@@ -29,8 +29,6 @@ export class Medman implements MedmanInterface {
 
   public rename() {
     this.episodes.forEach(e => {
-      const oldPath = `${this.directory}/${e.filename}`;
-
       if (!e.isMedia) {
         console.log(`\tSkipped ${e.filename} as it is not media.`);
         return;
@@ -42,6 +40,8 @@ export class Medman implements MedmanInterface {
         );
         return;
       }
+
+      const oldPath = `${this.directory}/${e.filename}`;
       const newName = e.newName(this.name);
       const newPath = `${this.directory}/${newName}`;
 
