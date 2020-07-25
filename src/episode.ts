@@ -1,16 +1,11 @@
 import { validMediaExtensions } from './validMediaExtensions';
 
-export type EpisodeType = {
-  filename: string;
-  ident: Ident | null;
-};
-
 export type Ident = {
   season: string;
   episode: string;
 };
 
-export class Episode implements EpisodeType {
+export class Episode {
   private _filename: string;
 
   constructor(filename: string) {
@@ -36,7 +31,10 @@ export class Episode implements EpisodeType {
     if (!matches) return null;
 
     const groups = (matches as RegExpMatchArray).groups;
-    const { season, episode }: Ident = groups as Ident;
+    let { season, episode }: Ident = groups as Ident;
+
+    season = season.length > 1 ? season : `0${season}`;
+    episode = episode.length > 1 ? episode : `0${episode}`;
 
     return { season, episode };
   };

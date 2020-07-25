@@ -1,3 +1,5 @@
+import chalk from 'chalk';
+
 import { Episode } from './episode';
 import { readdirSync, statSync, renameSync } from 'fs';
 import { validMediaExtensions } from './validMediaExtensions';
@@ -22,7 +24,7 @@ export class Medman implements MedmanInterface {
   }
 
   public scan(): void {
-    console.log('Medman found the following episodes:');
+    console.log(chalk.blue('Medman found the following episodes:'));
     this.episodes.forEach(e => {
       console.log(`\t${e.filename}`);
     });
@@ -34,12 +36,12 @@ export class Medman implements MedmanInterface {
       const skipped = this.episodes.filter(e => !e.ident);
       const renamed = this.doRename(toRename);
 
-      console.log('Renamed episodes:');
+      console.log(chalk.green('Renamed episodes:'));
       renamed.forEach(s => console.log(s));
 
       if (skipped.length) {
-        console.log('Skipped episodes');
-        skipped.forEach(s => console.log(`\t${s}`));
+        console.log(chalk.yellow('Skipped episodes'));
+        skipped.forEach(s => console.log(`\t${s.filename}`));
       }
     } catch (error) {
       console.log('Uable to rename due to error:');
