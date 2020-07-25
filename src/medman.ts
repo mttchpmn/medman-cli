@@ -3,7 +3,6 @@ import chalk from 'chalk';
 import { Episode } from './episode';
 import { readdirSync, statSync, renameSync } from 'fs';
 import { validMediaExtensions } from './validMediaExtensions';
-import { performance } from 'perf_hooks';
 
 export type MedmanInterface = {
   name: string;
