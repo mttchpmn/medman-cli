@@ -2,8 +2,9 @@
   "name": "medman",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./build/index.js",
   "scripts": {
+    "medman": "node ./build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "cross-env NODE_ENV=development nodemon --watch src --delay 1 --exec 'ts-node' src/index.ts"
   },
@@ -13,6 +14,7 @@
   "dependencies": {
     "@types/node": "^14.0.24",
     "chalk": "^4.1.0",
+    "commander": "^6.0.0",
     "cross-env": "^7.0.2",
     "eslint": "7.2.0",
     "nodemon": "^2.0.4",

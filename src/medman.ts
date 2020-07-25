@@ -3,6 +3,7 @@ import chalk from 'chalk';
 import { Episode } from './episode';
 import { readdirSync, statSync, renameSync } from 'fs';
 import { validMediaExtensions } from './validMediaExtensions';
+import { performance } from 'perf_hooks';
 
 export type MedmanInterface = {
   name: string;
@@ -30,11 +31,15 @@ export class Medman implements MedmanInterface {
     });
   }
 
-  public rename(): void {
+  public rename(previewMode: boolean): void {
     try {
       const toRename = this.episodes.filter(e => e.ident);
       const skipped = this.episodes.filter(e => !e.ident);
-      const renamed = this.doRename(toRename);
+      const renamed = this.doRename(toRename, previewMode);
+
+      if (previewMode) {
+        console.log(chalk.red('---------- [ Previewing Rename ] ----------'));
+      }
 
       console.log(chalk.green('Renamed episodes:'));
       renamed.forEach(s => console.log(s));
@@ -75,7 +80,7 @@ export class Medman implements MedmanInterface {
     return this.directory + '/' + fileName;
   }
 
-  private doRename(episodes: Episode[]): string[] {
+  private doRename(episodes: Episode[], previewMode: boolean): string[] {
     const result: string[] = [];
 
     episodes.forEach(e => {
@@ -83,7 +88,7 @@ export class Medman implements MedmanInterface {
       const newName = e.generateNewName(this.name);
       const newPath = this.getPath(newName);
 
-      // renameSync(oldPath, newPath); // TODO - undisable for prod
+      if (!previewMode) renameSync(oldPath, newPath);
       // console.log(`\t${e.filename} -> ${newName}`); // Should we log here, or return as below?
       result.push(`\t${e.filename} -> ${newName}`);
     });
@@ -93,11 +98,3 @@ export class Medman implements MedmanInterface {
 }
 
 export default Medman;
-
-// --------------------------------------------------------------------
-
-const test = new Medman('./test', 'Wakaman');
-
-test.scan();
-console.log('\n');
-test.rename();
