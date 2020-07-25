@@ -21,12 +21,12 @@ export class Medman implements MedmanInterface {
     this.episodes = this.loadEpisodes(this.files);
   }
 
-  // public scan(): void {
-  //   console.log('Medman found the following media files:');
-  //   this.episodes.forEach(e => {
-  //     if (e.isMedia) console.log(`\t${e.filename}`);
-  //   });
-  // }
+  public scan(): void {
+    console.log('Medman found the following episodes:');
+    this.episodes.forEach(e => {
+      console.log(`\t${e.filename}`);
+    });
+  }
 
   public rename(): void {
     try {
@@ -81,8 +81,8 @@ export class Medman implements MedmanInterface {
       const newName = e.generateNewName(this.name);
       const newPath = this.getPath(newName);
 
-      // renameSync(oldPath, newPath);
-      // console.log(`\t${e.filename} -> ${newName}`);
+      // renameSync(oldPath, newPath); // TODO - undisable for prod
+      // console.log(`\t${e.filename} -> ${newName}`); // Should we log here, or return as below?
       result.push(`\t${e.filename} -> ${newName}`);
     });
 
@@ -96,5 +96,6 @@ export default Medman;
 
 const test = new Medman('./test', 'Wakaman');
 
-// test.scan();
+test.scan();
+console.log('\n');
 test.rename();
