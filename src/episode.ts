@@ -2,13 +2,10 @@ import { validMediaExtensions } from './validMediaExtensions';
 
 export type EpisodeType = {
   filename: string;
-  extension: string;
-  isMedia: boolean;
   ident: Ident | null;
-  newName: (name: string) => string;
 };
 
-type Ident = {
+export type Ident = {
   season: string;
   episode: string;
 };
@@ -24,34 +21,12 @@ export class Episode implements EpisodeType {
     return this._filename;
   }
 
-  get extension(): string {
-    return this.getExt(this._filename);
-  }
-
-  get isMedia(): boolean {
-    return this.checkIfMedia(this.extension);
+  get ext(): string {
+    return this.filename.substring(this._filename.length - 4);
   }
 
   get ident(): Ident | null {
     return this.getIdent(this._filename);
-  }
-
-  public newName(name: string): string {
-    if (!this.isMedia || !this.ident) {
-      throw new Error('File not valid for rename');
-    }
-
-    const { season, episode } = this.ident;
-
-    return `${name} - S${season}E${episode}${this.extension}`;
-  }
-
-  private getExt(f: string): string {
-    return f.substring(f.length - 4);
-  }
-
-  private checkIfMedia(ext: string): boolean {
-    return validMediaExtensions.includes(ext);
   }
 
   public getIdent = (f: string): Ident | null => {
@@ -65,4 +40,12 @@ export class Episode implements EpisodeType {
 
     return { season, episode };
   };
+
+  public generateNewName(seasonName: string): string {
+    if (!this.ident) throw new Error('Episode not valid for rename');
+
+    const { season: s, episode: e } = this.ident;
+
+    return `${seasonName} - S${s}E${e}${this.ext}`;
+  }
 }
