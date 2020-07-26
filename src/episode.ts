@@ -25,8 +25,9 @@ export class Episode {
   }
 
   public getIdent = (f: string): Ident | null => {
-    const regex = /([Ss]?(?<season>\d{1,2}).[Ee]?(?<episode>\d{1,2}))/;
-    const matches: RegExpMatchArray | null = f.match(regex);
+    const short = /([Ss]?(?<season>\d{1,2}).[Ee]?(?<episode>\d{1,2}))/;
+    const long = /([Ss]eason (?<season>\d{1,2})(.{1,3})[Ee]pisode (?<episode>\d{1,2}))/;
+    const matches: RegExpMatchArray | null = f.match(short) || f.match(long);
 
     if (!matches) return null;
 
