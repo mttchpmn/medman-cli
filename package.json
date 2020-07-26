@@ -1,29 +1,29 @@
 {
   "name": "medman",
-  "version": "1.0.0",
-  "description": "",
-  "main": "./build/index.js",
+  "version": "2.0.0",
+  "description": "CLI media manager for renaming tv series on remote media servers.",
+  "main": "index.ts",
   "bin": {
     "medman": "./build/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "cross-env NODE_ENV=development nodemon --watch src --delay 1 --exec 'ts-node' src/index.ts"
+    "prepublish": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "repository": "https://github.com/mttchpmn/medman-cli.git",
+  "author": "Matt Chapman",
   "license": "ISC",
   "dependencies": {
     "@types/node": "^14.0.24",
     "chalk": "^4.1.0",
     "commander": "^6.0.0",
-    "cross-env": "^7.0.2",
-    "eslint": "7.2.0",
-    "nodemon": "^2.0.4",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
   },
   "devDependencies": {
+    "nodemon": "^2.0.4",
+    "eslint": "7.2.0",
     "eslint-config-airbnb": "18.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.21.2",
