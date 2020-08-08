@@ -12,6 +12,9 @@ beforeEach(async () => {
     'notAFilm.txt',
     'alsoNotAFilm.csv',
     'stillNotAFilm.doc',
+    'noIdent.avi',
+    'noIdent.mkv',
+    'noIdent.mp4',
   ];
   await fs.mkdir('./testDir');
   for await (const f of initialFiles) {
@@ -33,6 +36,9 @@ describe('Testing Medman', () => {
         'CoolShow.1x5.avi',
         'CoolShow.S1E3.mkv',
         'CoolShow.s01.e01.mkv',
+        'noIdent.avi',
+        'noIdent.mkv',
+        'noIdent.mp4',
       ];
       const result = medman.scan();
 
@@ -43,16 +49,21 @@ describe('Testing Medman', () => {
   describe('Rename function', () => {
     it('Should rename media files correctly', async () => {
       const medman = new Medman('./testDir', 'Cool Show');
-      const expectedOutput = [
+      const newNames = [
         'Cool Show - S01E01.mkv',
         'Cool Show - S01E02.avi',
         'Cool Show - S01E03.mkv',
         'Cool Show - S01E04.mp4',
         'Cool Show - S01E05.avi',
       ];
+      const skipped = ['noIdent.avi', 'noIdent.mkv', 'noIdent.mp4'];
       const result = medman.rename();
 
-      expect(result.sort()).toEqual(expectedOutput.sort());
+      expect(result).toHaveProperty(
+        'newNames',
+        expect.arrayContaining(newNames)
+      );
+      expect(result).toHaveProperty('skipped', expect.arrayContaining(skipped));
     });
   });
 });
