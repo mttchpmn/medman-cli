@@ -2,18 +2,34 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 
 const call = promisify(exec);
-const command = 'df -h ./';
 
-const main = async () => {
+export type DiskObject = {
+  diskName: string;
+  size: string;
+  used: string;
+  available: string;
+  capacity: string;
+};
+
+const main = async (dir = './'): Promise<DiskObject[]> => {
+  const command = `df -h ${dir}`;
+
   try {
     const { stdout } = await call(command);
 
-    const [diskName, size, used, available, capacity] = stdout
-      .split('\n')[1]
-      .split(' ')
-      .filter(i => i.match(/./));
+    // Split by lines and remove empty results
+    const [header, ...data] = stdout.split('\n').filter(i => i.match(/./));
 
-    return { diskName, size, used, available, capacity };
+    const parseData = (row: string): DiskObject => {
+      // Split by whitespace and remove empty items
+      const [diskName, size, used, available, capacity] = row
+        .split(' ')
+        .filter(i => i.match(/./));
+
+      return { diskName, size, used, available, capacity };
+    };
+
+    return data.map(parseData);
   } catch (error) {
     throw error;
   }

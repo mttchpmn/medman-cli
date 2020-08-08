@@ -1,7 +1,8 @@
 import chalk from 'chalk';
 
-import { Episode } from './episode';
 import { readdirSync, statSync, renameSync } from 'fs';
+import getUsage from './disk-usage';
+import { Episode } from './episode';
 import { validMediaExtensions } from './validMediaExtensions';
 
 export type MedmanInterface = {
@@ -114,6 +115,10 @@ export class Medman implements MedmanInterface {
       .join('\n');
 
     return result;
+  }
+
+  public static getUsage() {
+    return getUsage();
   }
 }
 
