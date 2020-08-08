@@ -14,7 +14,7 @@ export type MedmanInterface = {
 export type RenameObject = {
   oldNames: string[];
   newNames: string[];
-  info: string;
+  skipped?: string[];
 };
 
 export class Medman implements MedmanInterface {
@@ -34,30 +34,16 @@ export class Medman implements MedmanInterface {
     return this.episodes.map(e => e.filename);
   }
 
-  public rename(previewMode = true): string[] {
+  public rename(previewMode = true): RenameObject {
     try {
+      const skipped = this.episodes.filter(e => !e.ident).map(e => e.filename);
+
       const toRename = this.episodes.filter(e => e.ident);
-      const skipped = this.episodes.filter(e => !e.ident);
       const renamed = this.doRename(toRename, previewMode);
 
-      if (previewMode) {
-        console.log(chalk.red('---------- [ Previewing Rename ] ----------'));
-      }
-
-      console.log(chalk.green('Renamed episodes:'));
-      console.log(renamed.info);
-
-      if (skipped.length) {
-        console.log(chalk.yellow('Skipped episodes'));
-        skipped.forEach(s => console.log(`\t${s.filename}`));
-      }
-
-      return renamed.newNames;
+      return { ...renamed, skipped };
     } catch (error) {
-      console.log('Unable to rename due to error:');
-      console.error(error);
-
-      return [];
+      throw error;
     }
   }
 
@@ -91,7 +77,6 @@ export class Medman implements MedmanInterface {
     const result: RenameObject = {
       oldNames: episodes.map(e => e.filename),
       newNames: [],
-      info: '',
     };
 
     episodes.forEach(e => {
@@ -100,14 +85,13 @@ export class Medman implements MedmanInterface {
       const newPath = this.getPath(newName);
 
       if (!previewMode) renameSync(oldPath, newPath);
-      // console.log(`\t${e.filename} -> ${newName}`); // Should we log here, or return as below?
-      // result.push(`\t${e.filename} -> ${newName}`);
+
       result.newNames.push(newName);
     });
 
-    result.info = result.oldNames
-      .map((old, index) => `${old} -> ${result.newNames[index]}`)
-      .join('\n');
+    // result.info = result.oldNames
+    //   .map((old, index) => `${old} -> ${result.newNames[index]}`)
+    //   .join('\n');
 
     return result;
   }
