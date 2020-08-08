@@ -1,6 +1,6 @@
 {
   "name": "medman",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "CLI media manager for renaming tv series on remote media servers.",
   "main": "index.ts",
   "bin": {
