@@ -10,7 +10,7 @@ program
   .command('scan <directory>')
   .description('Scan a directory for episodes')
   .action(directory => {
-    const medman = new Medman(directory, '');
+    const medman = new Medman(directory);
     medman.scan();
   });
 

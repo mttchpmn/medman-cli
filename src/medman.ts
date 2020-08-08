@@ -10,27 +10,35 @@ export type MedmanInterface = {
   episodes: Episode[];
 };
 
+export type RenameObject = {
+  oldNames: string[];
+  newNames: string[];
+  info: string;
+};
+
 export class Medman implements MedmanInterface {
   name: string;
   directory: string;
   files: string[];
   episodes: Episode[];
 
-  constructor(directory: string, name: string) {
-    this.name = name;
+  constructor(directory: string, name?: string) {
+    this.name = name || '';
     this.directory = directory;
     this.files = this.loadDirectory(directory);
     this.episodes = this.loadEpisodes(this.files);
   }
 
-  public scan(): void {
+  public scan(): string[] {
     console.log(chalk.blue('Medman found the following episodes:'));
     this.episodes.forEach(e => {
       console.log(`\t${e.filename}`);
     });
+
+    return this.episodes.map(e => e.filename);
   }
 
-  public rename(previewMode: boolean): void {
+  public rename(previewMode = true): string[] {
     try {
       const toRename = this.episodes.filter(e => e.ident);
       const skipped = this.episodes.filter(e => !e.ident);
@@ -41,15 +49,19 @@ export class Medman implements MedmanInterface {
       }
 
       console.log(chalk.green('Renamed episodes:'));
-      renamed.forEach(s => console.log(s));
+      console.log(renamed.info);
 
       if (skipped.length) {
         console.log(chalk.yellow('Skipped episodes'));
         skipped.forEach(s => console.log(`\t${s.filename}`));
       }
+
+      return renamed.newNames;
     } catch (error) {
-      console.log('Uable to rename due to error:');
+      console.log('Unable to rename due to error:');
       console.error(error);
+
+      return [];
     }
   }
 
@@ -79,8 +91,12 @@ export class Medman implements MedmanInterface {
     return this.directory + '/' + fileName;
   }
 
-  private doRename(episodes: Episode[], previewMode: boolean): string[] {
-    const result: string[] = [];
+  private doRename(episodes: Episode[], previewMode: boolean): RenameObject {
+    const result: RenameObject = {
+      oldNames: episodes.map(e => e.filename),
+      newNames: [],
+      info: '',
+    };
 
     episodes.forEach(e => {
       const oldPath = this.getPath(e.filename);
@@ -89,8 +105,13 @@ export class Medman implements MedmanInterface {
 
       if (!previewMode) renameSync(oldPath, newPath);
       // console.log(`\t${e.filename} -> ${newName}`); // Should we log here, or return as below?
-      result.push(`\t${e.filename} -> ${newName}`);
+      // result.push(`\t${e.filename} -> ${newName}`);
+      result.newNames.push(newName);
     });
+
+    result.info = result.oldNames
+      .map((old, index) => `${old} -> ${result.newNames[index]}`)
+      .join('\n');
 
     return result;
   }
