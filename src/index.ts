@@ -18,15 +18,25 @@ program
 program
   .command('usage')
   .description('Show the disk usage on current disk')
-  .action(async () => {
-    const disks = await Medman.getUsage();
-    const { diskName, size, used, available, capacity } = disks[0];
+  .option('-a, --all', 'Show usage for all disks')
+  .action(async ({ all }) => {
+    try {
+      const disks = await Medman.getUsage(all);
 
-    console.log(chalk.white.bold(`Disk Usage on:\t${diskName}`));
-    console.log(chalk.cyan(`\tSize:\t\t${size}`));
-    console.log(chalk.cyan(`\tAvailable:\t${chalk.green(available)}`));
-    console.log(chalk.cyan(`\tUsed:\t\t${chalk.yellow(used)}`));
-    console.log(chalk.cyan(`\tCapacity:\t${capacity}`));
+      disks.forEach(disk => {
+        const { diskName, size, used, available, capacity } = disk;
+
+        console.log(chalk.white.bold(`Disk Usage on:\t${diskName}`));
+        console.log(chalk.cyan(`\tSize:\t\t${size}`));
+        console.log(chalk.cyan(`\tAvailable:\t${chalk.green(available)}`));
+        console.log(chalk.cyan(`\tUsed:\t\t${chalk.yellow(used)}`));
+        console.log(chalk.cyan(`\tCapacity:\t${capacity}`));
+      });
+    } catch (error) {
+      console.error(
+        chalk.bold.red(`Error reading disk usage:\n${chalk.white(error)}`)
+      );
+    }
   });
 
 program

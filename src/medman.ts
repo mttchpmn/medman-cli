@@ -117,8 +117,8 @@ export class Medman implements MedmanInterface {
     return result;
   }
 
-  public static getUsage() {
-    return getUsage();
+  public static getUsage(all: boolean) {
+    return getUsage(all);
   }
 }
 

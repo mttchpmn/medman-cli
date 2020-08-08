@@ -11,8 +11,8 @@ export type DiskObject = {
   capacity: string;
 };
 
-const main = async (dir = './'): Promise<DiskObject[]> => {
-  const command = `df -h ${dir}`;
+const main = async (all = false): Promise<DiskObject[]> => {
+  const command = all ? 'df -h' : 'df -h ./';
 
   try {
     const { stdout } = await call(command);
