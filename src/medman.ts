@@ -31,11 +31,6 @@ export class Medman implements MedmanInterface {
   }
 
   public scan(): string[] {
-    console.log(chalk.blue('Medman found the following episodes:'));
-    this.episodes.forEach(e => {
-      console.log(`\t${e.filename}`);
-    });
-
     return this.episodes.map(e => e.filename);
   }
 

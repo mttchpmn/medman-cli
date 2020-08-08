@@ -12,7 +12,13 @@ program
   .description('Scan a directory for episodes')
   .action(directory => {
     const medman = new Medman(directory);
-    medman.scan();
+    const episodes = medman.scan();
+    console.log(
+      chalk.white.bold(
+        episodes.length ? 'Episodes found:' : 'No episodes found.'
+      )
+    );
+    episodes.forEach(e => console.log(chalk.cyan(`\t${e}`)));
   });
 
 program
@@ -41,7 +47,7 @@ program
 
 program
   .command('rename <name> <directory>')
-  .description('Scan a directory for episodes')
+  .description('Rename episodes to match standard format')
   .option('-p, --preview', 'Preview rename')
   .action((name, directory, opts) => {
     const medman = new Medman(directory, name);
