@@ -1,6 +1,7 @@
-import rimraf from 'rimraf';
 import { promises as fs } from 'fs';
+
 import { Medman } from '../medman';
+import { getMockOutput, callMedman } from './utils';
 
 beforeEach(async () => {
   const initialFiles = [
@@ -20,11 +21,11 @@ beforeEach(async () => {
   for await (const f of initialFiles) {
     await fs.writeFile(`./testDir/${f}`, 'test');
   }
-}, 500);
+}, 5000);
 
 afterEach(async () => {
   await fs.rmdir('./testDir', { recursive: true });
-}, 500);
+}, 5000);
 
 describe('Testing Medman', () => {
   describe('Scan function', () => {
@@ -43,6 +44,13 @@ describe('Testing Medman', () => {
       const result = medman.scan();
 
       expect(result).toEqual(expectedOutput);
+    });
+
+    it('Should output the correct information to stdout', async () => {
+      const output = await callMedman('scan ./testDir');
+      const expectedOutput = await getMockOutput('scan.txt');
+
+      expect(output).toEqual(expectedOutput);
     });
   });
 
@@ -64,6 +72,13 @@ describe('Testing Medman', () => {
         expect.arrayContaining(newNames)
       );
       expect(result).toHaveProperty('skipped', expect.arrayContaining(skipped));
+    });
+
+    it('Should output correct information to stdout', async () => {
+      const output = await callMedman('rename "Cool Show" ./testDir');
+      const expectedOutput = await getMockOutput('rename.txt');
+
+      expect(output).toEqual(expectedOutput);
     });
   });
 });
