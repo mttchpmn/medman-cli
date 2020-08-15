@@ -1,6 +1,6 @@
 {
   "name": "medman",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "CLI media manager for remote media servers.",
   "main": "index.ts",
   "bin": {
