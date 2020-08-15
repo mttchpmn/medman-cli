@@ -4,6 +4,15 @@ A CLI Media Manager to make maintaining a remote media server a breeze.
 
 ## Overview
 
+- Hate getting a folder full of TV episodes from your mate but your Plex server won't detect them 'cause they're all named weird?
+- Hate not being able to export your movie library metadata out of Plex?
+- Want to know how much disk space your massive library of ~~porn~~ movies occupies?
+- Unable to use a normal file browser because your server is remote and only accessible via SSH?
+
+MedMan to the rescue!
+
+MedMan is a command line tool to make managing your remote movie server a breeze. Supporting features like media scanning, disk usage analysis, renaming of pesky episode formats, and querying and exporting library metadata, MedMan should be the number 1 tool of any Plex admin.
+
 ## Installation
 
 1. Make sure Node and NPM are installed on your system.
