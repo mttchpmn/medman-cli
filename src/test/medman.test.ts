@@ -46,12 +46,12 @@ describe('Testing Medman', () => {
       expect(result).toEqual(expectedOutput);
     });
 
-    it('Should output the correct information to stdout', async () => {
-      const output = await callMedman('scan ./testDir');
-      const expectedOutput = await getMockOutput('scan.txt');
+    // it('Should output the correct information to stdout', async () => {
+    //   const output = await callMedman('scan ./testDir');
+    //   const expectedOutput = await getMockOutput('scan.txt');
 
-      expect(output).toEqual(expectedOutput);
-    });
+    //   expect(output).toEqual(expectedOutput);
+    // });
   });
 
   describe('Rename function', () => {
@@ -74,11 +74,11 @@ describe('Testing Medman', () => {
       expect(result).toHaveProperty('skipped', expect.arrayContaining(skipped));
     });
 
-    it('Should output correct information to stdout', async () => {
-      const output = await callMedman('rename "Cool Show" ./testDir');
-      const expectedOutput = await getMockOutput('rename.txt');
+    // it('Should output correct information to stdout', async () => {
+    //   const output = await callMedman('rename "Cool Show" ./testDir');
+    //   const expectedOutput = await getMockOutput('rename.txt');
 
-      expect(output).toEqual(expectedOutput);
-    });
+    //   expect(output).toEqual(expectedOutput);
+    // });
   });
 });

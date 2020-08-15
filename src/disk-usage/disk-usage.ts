@@ -1,7 +1,4 @@
-import { exec } from 'child_process';
-import { promisify } from 'util';
-
-const call = promisify(exec);
+import { callCommand } from '../util/command';
 
 export type DiskObject = {
   diskName: string;
@@ -15,10 +12,11 @@ const main = async (all = false): Promise<DiskObject[]> => {
   const command = all ? 'df -h' : 'df -h ./';
 
   try {
-    const { stdout } = await call(command);
+    // ConfigStub this
+    const output = (await callCommand(command)) as string;
 
     // Split by lines and remove empty results
-    const [header, ...data] = stdout.split('\n').filter(i => i.match(/./));
+    const [header, ...data] = output.split('\n').filter(i => i.match(/./));
 
     const parseData = (row: string): DiskObject => {
       // Split by whitespace and remove empty items
