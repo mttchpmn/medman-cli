@@ -7,25 +7,39 @@
     "medman": "./build/index.js"
   },
   "scripts": {
-    "prepublish": "tsc",
-    "test": "jest ./src/test"
+    "prepublish": "yarn test && tsc",
+    "test": "jest ./src",
+    "test:unit": "jest unit"
   },
-  "keywords": [],
+  "keywords": [
+    "movies",
+    "tv",
+    "sysadmin",
+    "server",
+    "cli tool",
+    "cli",
+    "plex",
+    "media",
+    "manager",
+    "movie server",
+    "remote server"
+  ],
   "repository": "https://github.com/mttchpmn/medman-cli.git",
   "author": "Matt Chapman",
   "license": "ISC",
   "dependencies": {
     "@types/node": "^14.0.24",
+    "@types/sinon": "^9.0.4",
     "chalk": "^4.1.0",
     "commander": "^6.0.0",
     "ffprobe": "^1.1.0",
     "ffprobe-static": "^3.0.0",
+    "sinon": "^9.0.3",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
   },
   "devDependencies": {
     "@types/jest": "^26.0.7",
-    "ts-jest": "^26.1.4",
     "eslint": "7.2.0",
     "eslint-config-airbnb": "18.2.0",
     "eslint-config-prettier": "^6.11.0",
@@ -35,6 +49,7 @@
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "4.0.0",
     "jest": "^26.1.0",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "ts-jest": "^26.1.4"
   }
 }
